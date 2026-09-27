@@ -106,7 +106,7 @@ state dfa_transition(dfa *a, char c, state qi){
 
 
 bool dfa_add_transition(dfa *a, char c, state qi, state qf){
-     if(dfa_state_is_exist(a,qf) && dfa_transition(a,c,qi)== NULL){
+     if(dfa_state_is_exist(a,qi) && dfa_state_is_exist(a,qf) && dfa_transition(a,c,qi)== NULL){
         a->n_transition++;
         transition *tmp = malloc(sizeof(transition)*a->n_transition);
         for(size_t i = 0; i < a->n_transition-1; i++)
