@@ -30,4 +30,6 @@ bool dfa_add_transition(dfa *a, char c, state qi, state qf);
 
 bool dfa_exec(dfa *a, char *c);
 
+
+
 #endif
