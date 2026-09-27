@@ -40,7 +40,7 @@ dfa* dfa_create(){
 }
 
 bool dfa_state_is_exist(dfa *a, state q){
-    if(a != NULL){
+    if(a != NULL && q != NULL){
         for(size_t i = 0; i < a->n_states; i++)
             if(strcmp(a->states[i], q))
                 return false;
@@ -52,7 +52,7 @@ bool dfa_state_is_exist(dfa *a, state q){
 }
 
 bool dfa_state_is_final(dfa *a, state q){
-    if(a != NULL){
+    if(a != NULL && q != NULL){
         for(size_t i = 0; i < a->n_final_states; i++)
             if(strcmp(a->final_states[i], q))
                 return false;
@@ -67,7 +67,7 @@ bool dfa_add_state(dfa* a, state q){
         a->n_states++;
     
         state *tmp = malloc(sizeof(state)*a->n_states);
-        for(size_t i = 0; i < a->n_states; i++)
+        for(size_t i = 0; i < a->n_states-1; i++)
             tmp[i] = a->states[i];
         tmp[a->n_states - 1] = q;
         free(a->states);
@@ -90,7 +90,7 @@ bool dfa_set_final_state(dfa* a, state q){
     if(dfa_state_is_exist(a,q) && dfa_state_is_final(a,q)){
         a->n_final_states++;
         state *tmp = malloc(sizeof(state)*a->n_final_states);
-        for(size_t i = 0; i < a->n_final_states; i++)
+        for(size_t i = 0; i < a->n_final_states-1; i++)
             tmp[i] = a->final_states[i];
         tmp[a->n_final_states - 1] = q;
         free(a->final_states);
@@ -115,11 +115,11 @@ bool dfa_add_transition(dfa *a, char c, state qi, state qf){
      if(dfa_state_is_exist(a,qf) && dfa_transition(a,c,qi)== NULL){
         a->n_transition++;
         transition *tmp = malloc(sizeof(transition)*a->n_transition);
-        for(size_t i = 0; i < a->n_transition; i++)
+        for(size_t i = 0; i < a->n_transition-1; i++)
             tmp[i] = a->transitions[i];
-        tmp[a->n_transition+1].initial_state = qi;
-        tmp[a->n_transition+1].input = c;
-        tmp[a->n_transition+1].final_state = qf;
+        tmp[a->n_transition-1].initial_state = qi;
+        tmp[a->n_transition-1].input = c;
+        tmp[a->n_transition-1].final_state = qf;
         free(a->transitions);
         a->transitions = tmp;
         return true;
@@ -129,15 +129,17 @@ bool dfa_add_transition(dfa *a, char c, state qi, state qf){
 }
 
 bool dfa_exec(dfa *a, char *c){
-    char *pointer = c;
-    state current = a->initial_state;
-    if(dfa_state_is_exist(a,current)){
-        while(*pointer != '\0'){
-            current = dfa_transition(a,*pointer,current);
-            pointer++;
+    if(a != NULL && c != NULL){
+        char *pointer = c;
+        state current = a->initial_state;
+        if(dfa_state_is_exist(a,current)){
+            while(*pointer != '\0' && current != NULL){
+                current = dfa_transition(a,*pointer,current);
+                pointer++;
+            }
+            if(dfa_state_is_final(a,current))
+                return true;
         }
-        if(dfa_state_is_final(a,current))
-            return true;
     }
     return false;
 }
