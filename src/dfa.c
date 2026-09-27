@@ -40,26 +40,20 @@ dfa* dfa_create(){
 }
 
 bool dfa_state_is_exist(dfa *a, state q){
-    if(a != NULL && q != NULL){
+    if(a != NULL && q != NULL)
         for(size_t i = 0; i < a->n_states; i++)
             if(!strcmp(a->states[i], q))
-                return false;
-        return true;
-    }       
-    else
-        return false;
+                return true;
+    return false;
 
 }
 
 bool dfa_state_is_final(dfa *a, state q){
-    if(a != NULL && q != NULL){
+    if(a != NULL && q != NULL)
         for(size_t i = 0; i < a->n_final_states; i++)
             if(!strcmp(a->final_states[i], q))
-                return true;
-        return false;
-    }       
-    else
-        return false;
+                return true;   
+    return false;
 }
 
 bool dfa_add_state(dfa* a, state q){
