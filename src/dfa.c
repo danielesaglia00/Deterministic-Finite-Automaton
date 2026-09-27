@@ -129,7 +129,7 @@ bool dfa_add_transition(dfa *a, char c, state qi, state qf){
 }
 
 bool dfa_exec(dfa *a, char *c){
-    if(a != NULL && c != NULL){
+    if(a != NULL && c != NULL && a->initial_state != NULL){
         char *pointer = c;
         state current = a->initial_state;
         if(dfa_state_is_exist(a,current)){
