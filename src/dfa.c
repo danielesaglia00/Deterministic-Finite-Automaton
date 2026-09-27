@@ -81,7 +81,7 @@ bool dfa_set_initial_state(dfa* a, state initial_state){
 }
 
 bool dfa_set_final_state(dfa* a, state q){
-    if(dfa_state_is_exist(a,q) && dfa_state_is_final(a,q)){
+    if(dfa_state_is_exist(a,q) && !dfa_state_is_final(a,q)){
         a->n_final_states++;
         state *tmp = malloc(sizeof(state)*a->n_final_states);
         for(size_t i = 0; i < a->n_final_states-1; i++)
